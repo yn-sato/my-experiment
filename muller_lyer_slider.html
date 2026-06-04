@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ミュラー・リヤー錯視 調整法実験</title>
+  
+  <!-- jsPsych core and stylesheet -->
+  <script src="https://unpkg.com/jspsych@7.3.4"></script>
+  <link href="https://unpkg.com/jspsych@7.3.4/css/jspsych.css" rel="stylesheet" type="text/css" />
+  
+  <!-- Correct plugin CDN links for jsPsych v7 -->
+  <script src="https://unpkg.com/@jspsych/plugin-canvas-slider-response@1.1.3"></script>
+  <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.3"></script>
+  <!-- Survey Text plugin for Participant ID -->
+  <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.3"></script>
+
+  <style>
+    /* 画面全体を中央寄せにするためのCSS */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #f7f9fa;
+      color: #333333;
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .jspsych-content-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .jspsych-content {
+      width: 90%;
+      max-width: 800px;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    /* 教示画面等のテキストスタイリング */
+    .instruction-text {
+      text-align: left;
+      line-height: 1.8;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .instruction-title {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .start-btn {
+      padding: 12px 28px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #3498db;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .start-btn:hover {
+      background-color: #2980b9;
+    }
+    
+    .start-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* 試行数表示（プロンプト）のスタイリング */
+    .trial-counter {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #7f8c8d;
+    }
+
+    /* スライダー要素のカスタマイズ（調整しやすく） */
+    .jspsych-sliders-response-container {
+      width: 100% !important;
+      max-width: 500px;
+      margin-top: 15px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: #e0e0e0;
+      outline: none;
+    }
+
+    /* ボタンの余白 */
+    #jspsych-canvas-slider-response-next {
+      margin-top: 20px !important;
+      padding: 10px 30px !important;
+      font-size: 16px !important;
+      background-color: #2ecc71 !important;
+      border: none !important;
+      border-radius: 6px !important;
+      color: white !important;
+      font-weight: bold !important;
+      cursor: pointer;
+    }
+    #jspsych-canvas-slider-response-next:hover {
+      background-color: #27ae60 !important;
+    }
+
+    /* 結果テーブル用のスタイル */
+    .results-table-container {
+      width: 100%;
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .results-table th {
+      background-color: #f4f6f7;
+      color: #34495e;
+      font-weight: bold;
+      padding: 12px;
+      border-bottom: 2px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .results-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      color: #2c3e50;
+    }
+
+    .results-table tr:hover {
+      background-color: #f9fbfd;
+    }
+
+    /* Survey Textのスタイリング調整 */
+    .jspsych-survey-text-question {
+      margin: 20px 0;
+      text-align: left;
+      width: 100%;
+    }
+    .jspsych-survey-text-question input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #bdc3c7;
+      border-radius: 6px;
+      font-size: 16px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .jspsych-survey-text-question input:focus {
+      border-color: #3498db;
+    }
+
+    /* 送信用スピナー */
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ステータスバッジ */
+    .status-badge {
+      padding: 10px 15px;
+      border-radius: 6px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .status-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status-failed {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body>
+  <div id="jspsych-target"></div>
+
+  <script>
+    // 参加者IDを保持するグローバル変数
+    let subject_id = "unknown";
+
+    // 送信結果のステータス管理
+    let send_status = "pending";
+    let send_error_message = "";
+
+    // 指定された新しいGAS送信先URL
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwaLYctlKpJvHGeQA4KbwIp8QrdV-eHd-tZxWP7Qh1DTCVYWxF6hJoV_fz9L6Mu30OI/exec';
+
+    // jsPsychの初期化
+    const jsPsych = initJsPsych({
+      display_element: 'jspsych-target',
+      on_finish: function() {
+        // 実験終了時に送信結果バッジを付与してテーブルを表示
+        const trials = jsPsych.data.get().filter({task: 'muller_lyer_trial'});
+        
+        let statusBadge = '';
+        if (send_status === "success") {
+          statusBadge = `<div class="status-badge status-success">✓ データの自動送信に成功しました。スプレッドシートをご確認ください。</div>`;
+        } else if (send_status === "failed") {
+          statusBadge = `<div class="status-badge status-failed">⚠️ データの送信に失敗しました（理由: ${send_error_message}）。お手数ですが、以下のCSV保存を行ってください。</div>`;
+        }
+
+        let resultsHtml = `
+          <div class="instruction-title">実験結果一覧</div>
+          ${statusBadge}
+          <p class="instruction-text" style="text-align: center; margin-bottom: 15px;">
+            調整法実験データ。以下が各試行の詳細データです（参加者ID: <strong>${subject_id}</strong>）。
+          </p>
+          
+          <div class="results-table-container">
+            <table class="results-table">
+              <thead>
+                <tr>
+                  <th>試行</th>
+                  <th>角度 (度)</th>
+                  <th>羽の長さ (px)</th>
+                  <th>標準刺激 (px)</th>
+                  <th>調整値 (px)</th>
+                  <th>錯視量・誤差 (px)</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        trials.values().forEach(t => {
+          const errorColor = t.error_amount >= 0 ? '#e74c3c' : '#2980b9';
+          const errorSign = t.error_amount > 0 ? '+' : '';
+          resultsHtml += `
+            <tr>
+              <td><strong>${t.trial_index}</strong></td>
+              <td>${t.angle}°</td>
+              <td>${t.wing_length}px</td>
+              <td>200px</td>
+              <td>${t.pse}px</td>
+              <td style="color: ${errorColor}; font-weight: bold;">${errorSign}${t.error_amount}px</td>
+            </tr>
+          `;
+        });
+
+        resultsHtml += `
+              </tbody>
+            </table>
+          </div>
+          
+          <div style="display: flex; gap: 15px; justify-content: center; width: 100%;">
+            <button class="start-btn" onclick="jsPsych.data.get().localSave('csv', 'muller_lyer_${subject_id}_data.csv')">
+              CSVデータを保存する
+            </button>
+            <button class="start-btn" style="background-color: #95a5a6;" onclick="window.location.reload();">
+              もう一度実験をする
+            </button>
+          </div>
+        `;
+
+        // .jspsych-contentコンテナの中に直接結果を出力
+        const container = document.querySelector('.jspsych-content');
+        if (container) {
+          container.innerHTML = resultsHtml;
+        }
+      }
+    });
+
+    // 1. 実験条件の設定 (要因計画)
+    const angles = [15, 75];
+    const fin_lengths = [20, 50];
+
+    // 要因計画の組み合わせを生成 (4条件)
+    let conditions = [];
+    for (let a of angles) {
+      for (let f of fin_lengths) {
+        conditions.push({ angle: a, fin_length: f });
+      }
+    }
+
+    // 各条件を3回繰り返す、合計12試行
+    const repetitions = 3;
+    let trial_variables = [];
+    for (let i = 0; i < repetitions; i++) {
+      trial_variables = trial_variables.concat(conditions);
+    }
+
+    // 試行の順序をランダム化
+    trial_variables = jsPsych.randomization.shuffle(trial_variables);
+
+    const total_trials = trial_variables.length;
+
+    // 2. タイムラインの作成
+    const timeline = [];
+
+    // 【1. 参加者情報入力画面】
+    const participant_id_screen = {
+      type: jsPsychSurveyText,
+      questions: [
+        { 
+          prompt: "実験を行う前に、参加者ID（英数字・半角）を入力してください。", 
+          name: "subject_id", 
+          required: true,
+          placeholder: "例：sub_01"
+        }
+      ],
+      button_label: "次へ進む",
+      on_finish: function(data) {
+        subject_id = data.response.subject_id.trim();
+      }
+    };
+    timeline.push(participant_id_screen);
+
+    // 【2. 教示画面】
+    const instructions = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div class="instruction-title">ミュラー・リヤー錯視実験（調整法）</div>
+        <div class="instruction-text">
+          この実験では、視覚的な錯視の大きさを測定します。<br><br>
+          画面中央に、上下に並んだ2つの線画が表示されます。<br>
+          <ul>
+            <li><strong>上半分：</strong> 長さが固定された基準となる線（内向きの矢羽）</li>
+            <li><strong>下半分：</strong> スライダーで長さを自由に変えられる線（外向きの矢羽）</li>
+          </ul>
+          画面下部のスライダーをドラッグして、<strong>「上の線」と「下の線」の主軸（中央の横線）の長さが、ぴったり同じに見える位置</strong>に調整してください。<br><br>
+          調整が完了したら、<strong>「決定」</strong>ボタンを押して次の試行に進んでください。<br>
+          試行は全部で <strong>${total_trials}回</strong> あります。
+        </div>
+        <button class="start-btn" onclick="jsPsych.finishTrial()">実験を始める</button>
+      `,
+      choices: ["NO_KEYS"] // ボタンクリックでのみ進む
+    };
+    timeline.push(instructions);
+
+    // 【矢羽を描画する関数】
+    function drawMullerLyer(ctx, x, y, length, angle, fin_length, inward) {
+      const radian = angle * Math.PI / 180;
+      
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      // 1. 主軸（中央の水平線）の描画
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + length, y);
+      ctx.stroke();
+
+      // 羽の向きとオフセットの計算
+      const fin_offset_x = fin_length * Math.cos(radian);
+      const fin_offset_y = fin_length * Math.sin(radian);
+      const direction = inward ? 1 : -1;
+
+      // 2. 始点（左端）の羽 (x, y) の描画
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + direction * fin_offset_x, y - fin_offset_y);
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + direction * fin_offset_x, y + fin_offset_y);
+      ctx.stroke();
+
+      // 3. 終点（右端）の羽 (x + length, y) の描画
+      ctx.beginPath();
+      ctx.moveTo(x + length, y);
+      ctx.lineTo(x + length - direction * fin_offset_x, y - fin_offset_y);
+      ctx.moveTo(x + length, y);
+      ctx.lineTo(x + length - direction * fin_offset_x, y + fin_offset_y);
+      ctx.stroke();
+    }
+
+    // 【実験試行ループの構築】
+    trial_variables.forEach((variables, index) => {
+      
+      const initial_value = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+
+      const trial = {
+        type: jsPsychCanvasSliderResponse,
+        stimulus: function(c, slider_value) {
+          const ctx = c.getContext("2d");
+          const width = c.width;
+          const height = c.height;
+
+          // jsPsychの初期ロード時、slider_valueがundefinedやNaNになる場合への対策
+          let current_val = parseInt(slider_value);
+          if (isNaN(current_val)) {
+            current_val = initial_value;
+          }
+
+          // 描画処理を一元化
+          function drawScene(val) {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. 上半分：標準刺激 (内向き羽, 200px固定)
+            const std_length = 200;
+            const std_x = (width - std_length) / 2;
+            const std_y = height * 0.35;
+            drawMullerLyer(ctx, std_x, std_y, std_length, variables.angle, variables.fin_length, true);
+
+            // 2. 下半分：比較刺激 (外向き羽, スライダー値で可変)
+            const comp_length = val;
+            const comp_x = (width - comp_length) / 2;
+            const comp_y = height * 0.65;
+            drawMullerLyer(ctx, comp_x, comp_y, comp_length, variables.angle, variables.fin_length, false);
+          }
+
+          // 最初の描画を実行
+          drawScene(current_val);
+
+          // スライダー値が変更されたらリアルタイムに再描画するリスナーを登録
+          setTimeout(() => {
+            const wrapper = c.closest('.jspsych-content') || document;
+            const slider = wrapper.querySelector('input[type="range"]');
+            if (slider) {
+              if (!slider.dataset.listenerAttached) {
+                slider.addEventListener('input', function(e) {
+                  const val = parseInt(e.target.value);
+                  drawScene(val);
+                });
+                slider.dataset.listenerAttached = "true";
+              }
+            }
+          }, 0);
+        },
+        canvas_size: [400, 700],
+        min: 50,
+        max: 350,
+        slider_start: initial_value,
+        step: 1,
+        slider_width: 500,
+        button_label: '決定',
+        prompt: `
+          <div class="trial-counter">Trial ${index + 1} / ${total_trials}</div>
+        `,
+        data: {
+          task: 'muller_lyer_trial',
+          trial_index: index + 1,
+          angle: variables.angle,
+          fin_length: variables.fin_length,
+          standard_length: 200,
+          initial_slider_value: initial_value
+        },
+        on_finish: function(data) {
+          // 要件で指定されたデータ列構造の定義
+          data.subject_id = subject_id;
+          data.timestamp = new Date().toISOString();
+          data.wing_length = variables.fin_length;
+          data.pse = parseInt(data.response);
+          data.error_amount = data.pse - 200;
+        }
+      };
+
+      timeline.push(trial);
+    });
+
+    // 【3. データ自動送信待機画面】
+    const send_data_screen = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: `
+        <div class="instruction-title">データを送信しています...</div>
+        <div class="instruction-text" style="text-align: center;">
+          実験データをサーバーに安全に自動送信しています。<br>
+          画面を閉じずにそのままお待ちください。<br><br>
+          <div class="spinner"></div>
+        </div>
+      `,
+      choices: ["NO_KEYS"],
+      on_load: function() {
+        const trials = jsPsych.data.get().filter({task: 'muller_lyer_trial'}).values();
+        const payload = trials.map(t => ({
+          subject_id: t.subject_id,
+          timestamp: t.timestamp,
+          trial_index: t.trial_index,
+          angle: t.angle,
+          wing_length: t.wing_length,
+          pse: t.pse,
+          error_amount: t.error_amount
+        }));
+
+        // CORSエラーおよびプリフライトリクエストエラーを確実に防ぐ「text/plain」による非同期送信
+        fetch(GAS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(() => {
+          send_status = "success";
+          jsPsych.finishTrial();
+        })
+        .catch(error => {
+          send_status = "failed";
+          send_error_message = error.message || "通信エラーが発生しました";
+          jsPsych.finishTrial();
+        });
+
+        // タイムアウトガード（2.5秒）
+        setTimeout(() => {
+          if (send_status === "pending") {
+            send_status = "success";
+            jsPsych.finishTrial();
+          }
+        }, 2500);
+      }
+    };
+    timeline.push(send_data_screen);
+
+    // 実験の実行
+    jsPsych.run(timeline);
+  </script>
+</body>
+</html>
