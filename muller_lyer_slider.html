@@ -279,7 +279,7 @@
           const errorSign = t.error_amount > 0 ? '+' : '';
           resultsHtml += `
             <tr>
-              <td><strong>${t.trial_index}</strong></td>
+              <td><strong>${t.display_trial_no}</strong></td> <!-- 重複バグ対策：jsPsych上書きを受けないdisplay_trial_noを使用 -->
               <td>${t.angle}°</td>
               <td>${t.wing_length}px</td>
               <td>200px</td>
@@ -494,6 +494,9 @@
           data.wing_length = variables.fin_length;
           data.pse = parseInt(data.response);
           data.error_amount = data.pse - 200;
+          
+          // jsPsychのシステム競合対策：確実に1から12として表示・出力させるための独自キー
+          data.display_trial_no = index + 1;
         }
       };
 
@@ -517,7 +520,7 @@
         const payload = trials.map(t => ({
           subject_id: t.subject_id,
           timestamp: t.timestamp,
-          trial_index: t.trial_index,
+          trial_index: t.display_trial_no, // スプレッドシート側でも確実に「1〜12」として送信
           angle: t.angle,
           wing_length: t.wing_length,
           pse: t.pse,
