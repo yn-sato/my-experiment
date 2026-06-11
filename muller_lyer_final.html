@@ -398,60 +398,30 @@
         
         let statusBadge = '';
         if (send_status === "success") {
-          statusBadge = `<div class="status-badge status-success">✓ データの送信が終わりました！結果は自動的に保存されています。</div>`;
+          statusBadge = `<div class="status-badge status-success" style="margin-bottom: 30px;">✓ データは星空の彼方（サーバー）へ安全に届きました。</div>`;
         } else if (send_status === "failed") {
-          statusBadge = `<div class="status-badge status-failed">⚠️ データの自動保存ができませんでした（エラー: ${send_error_message}）。お手数ですが、下のボタンからCSVを保存してください。</div>`;
+          statusBadge = `<div class="status-badge status-failed" style="margin-bottom: 30px;">⚠️ データの自動保存ができませんでした。恐れ入りますが、下記のリンクよりCSVを手動で保存してください。</div>`;
         }
 
         let resultsHtml = `
-          <div class="instruction-title">実験結果</div>
-          ${statusBadge}
-          <p class="instruction-text" style="text-align: center; margin-bottom: 20px;">
-            がんばって最後までクリアしました！今回のテスト結果です（ID: <strong>${subject_id}</strong>）。
-          </p>
-          
-          <div class="results-table-container">
-            <table class="results-table">
-              <thead>
-                <tr>
-                  <th>試行</th>
-                  <th>角度 (度)</th>
-                  <th>羽の長さ (px)</th>
-                  <th>標準刺激 (px)</th>
-                  <th>調整値 (px)</th>
-                  <th>錯視量・誤差 (px)</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        trials.values().forEach(t => {
-          const errorColor = t.error_amount >= 0 ? '#fb7185' : '#38bdf8'; /* 夜空に映えるピンク系とシアン系のエラー色 */
-          const errorSign = t.error_amount > 0 ? '+' : '';
-          resultsHtml += `
-            <tr>
-              <td><strong>${t.display_trial_no}</strong></td> <!-- 重複バグ対策：jsPsych上書きを受けないdisplay_trial_noを使用 -->
-              <td>${t.angle}°</td>
-              <td>${t.wing_length}px</td>
-              <td>200px</td>
-              <td>${t.pse}px</td>
-              <td style="color: ${errorColor}; font-weight: bold;">${errorSign}${t.error_amount}px</td>
-            </tr>
-          `;
-        });
-
-        resultsHtml += `
-              </tbody>
-            </table>
+          <div class="instruction-title" style="font-size: 2rem; color: #f59e0b; margin-top: 20px; margin-bottom: 25px; line-height: 1.4;">
+            ご協力ありがとうございました！！
           </div>
+          <p class="instruction-text" style="text-align: center; font-size: 1.4rem; color: #fbbf24; text-shadow: 0 0 15px rgba(251, 191, 36, 0.6); margin-bottom: 40px; font-weight: bold; width: 100%;">
+            願いが叶いますように☆彡
+          </p>
+          ${statusBadge}
           
-          <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; width: 100%;">
-            <button class="start-btn" onclick="jsPsych.data.get().localSave('csv', 'muller_lyer_${subject_id}_data.csv')">
-              CSVファイルをパソコンに保存する
-            </button>
-            <button class="start-btn" style="background: #475569; box-shadow: 0 4px 15px rgba(71, 85, 105, 0.4);" onclick="window.location.reload();">
+          <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; width: 100%;">
+            <button class="start-btn" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);" onclick="window.location.reload();">
               もう一度テストをする
             </button>
+            
+            <a href="#" style="color: #94a3b8; font-size: 0.95rem; text-decoration: underline; margin-top: 20px; transition: color 0.2s;" 
+               onmouseover="this.style.color='#cbd5e1'" onmouseout="this.style.color='#94a3b8'"
+               onclick="event.preventDefault(); jsPsych.data.get().localSave('csv', 'muller_lyer_${subject_id}_data.csv')">
+              （管理者用）CSVデータを手動で保存する
+            </a>
           </div>
         `;
 
