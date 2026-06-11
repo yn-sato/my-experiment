@@ -31,6 +31,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-y: auto; /* 縦スクロールを常に許可 */
       position: relative;
+      -webkit-tap-highlight-color: transparent; /* モバイルでの不要なタップハイライト全体を無効化 */
     }
 
     /* 背景に散りばめられた瞬くきらきら星のエフェクト */
@@ -194,6 +195,7 @@
       background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.1)); /* 天の川のような光 of帯 */
       outline: none;
       border: 1px solid rgba(255, 255, 255, 0.15);
+      -webkit-tap-highlight-color: transparent; /* モバイルでのタップ時の黒いハイライト枠を削除 */
     }
 
     /* スライダーのつまみを【さらに超巨大でダイナミックな流れ星】のデザインにカスタマイズ */
@@ -202,12 +204,15 @@
       appearance: none;
       width: 72px;  
       height: 72px; 
-      border: none;
-      background: transparent;
+      border: none !important; /* ボーダーを完全クリア */
+      outline: none !important; /* アウトラインを完全クリア */
+      background: transparent !important; /* iOSで背景が黒やグレーの四角形になるバグを修正 */
+      box-shadow: none !important; /* シャドウによる境界線枠の発生を防ぐ */
+      -webkit-tap-highlight-color: transparent; /* タップハイライトの無効化 */
       /* 黄金の大判お星様、グラデーション流線、きらめく星屑のSVG */
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><defs><linearGradient id='grad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%233498db' stop-opacity='0'/><stop offset='45%25' stop-color='%23e67e22' stop-opacity='0.6'/><stop offset='100%25' stop-color='%23f1c40f' stop-opacity='0.95'/></linearGradient></defs><path d='M8 56 Q 24 48 44 18' stroke='url(%23grad)' stroke-width='6.5' stroke-linecap='round' fill='none'/><path d='M4 46 Q 20 38 44 18' stroke='url(%23grad)' stroke-width='3.5' stroke-linecap='round' fill='none'/><path d='M16 60 Q 28 52 44 18' stroke='url(%23grad)' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='14' cy='52' r='2' fill='%23fff' opacity='0.7'/><circle cx='26' cy='40' r='1.8' fill='%23f1c40f' opacity='0.8'/><circle cx='8' cy='40' r='1.2' fill='%23fff' opacity='0.5'/><circle cx='34' cy='28' r='1.8' fill='%23fff' opacity='0.9'/><path fill='%23f1c40f' stroke='%23fff' stroke-width='1.5' d='M44 2 L48.5 14.5 L61 14.5 L51 21.5 L55 33.5 L44 26 L33 33.5 L37 21.5 L27 14.5 L39.5 14.5 Z'/><circle cx='44' cy='18' r='3' fill='%23fff'/></svg>");
-      background-size: contain;
-      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><defs><linearGradient id='grad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%233498db' stop-opacity='0'/><stop offset='45%25' stop-color='%23e67e22' stop-opacity='0.6'/><stop offset='100%25' stop-color='%23f1c40f' stop-opacity='0.95'/></linearGradient></defs><path d='M8 56 Q 24 48 44 18' stroke='url(%23grad)' stroke-width='6.5' stroke-linecap='round' fill='none'/><path d='M4 46 Q 20 38 44 18' stroke='url(%23grad)' stroke-width='3.5' stroke-linecap='round' fill='none'/><path d='M16 60 Q 28 52 44 18' stroke='url(%23grad)' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='14' cy='52' r='2' fill='%23fff' opacity='0.7'/><circle cx='26' cy='40' r='1.8' fill='%23f1c40f' opacity='0.8'/><circle cx='8' cy='40' r='1.2' fill='%23fff' opacity='0.5'/><circle cx='34' cy='28' r='1.8' fill='%23fff' opacity='0.9'/><path fill='%23f1c40f' stroke='%23fff' stroke-width='1.5' d='M44 2 L48.5 14.5 L61 14.5 L51 21.5 L55 33.5 L44 26 L33 33.5 L37 21.5 L27 14.5 L39.5 14.5 Z'/><circle cx='44' cy='18' r='3' fill='%23fff'/></svg>") !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
       cursor: pointer;
       transform: rotate(-10deg); /* 飛行感を出す少しの傾き */
       transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -217,17 +222,21 @@
     /* つまみを触った（ドラッグ中）ときに、流れ星がさらに大きくなり進む方向へ傾くアニメーション */
     input[type=range]::-webkit-slider-thumb:active {
       transform: scale(1.15) rotate(-22deg);
+      outline: none !important;
+      background-color: transparent !important;
     }
 
     /* Firefox用の流れ星設定 */
     input[type=range]::-moz-range-thumb {
       width: 72px;  
       height: 72px; 
-      border: none;
-      background: transparent;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><defs><linearGradient id='grad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%233498db' stop-opacity='0'/><stop offset='45%25' stop-color='%23e67e22' stop-opacity='0.6'/><stop offset='100%25' stop-color='%23f1c40f' stop-opacity='0.95'/></linearGradient></defs><path d='M8 56 Q 24 48 44 18' stroke='url(%23grad)' stroke-width='6.5' stroke-linecap='round' fill='none'/><path d='M4 46 Q 20 38 44 18' stroke='url(%23grad)' stroke-width='3.5' stroke-linecap='round' fill='none'/><path d='M16 60 Q 28 52 44 18' stroke='url(%23grad)' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='14' cy='52' r='2' fill='%23fff' opacity='0.7'/><circle cx='26' cy='40' r='1.8' fill='%23f1c40f' opacity='0.8'/><circle cx='8' cy='40' r='1.2' fill='%23fff' opacity='0.5'/><circle cx='34' cy='28' r='1.8' fill='%23fff' opacity='0.9'/><path fill='%23f1c40f' stroke='%23fff' stroke-width='1.5' d='M44 2 L48.5 14.5 L61 14.5 L51 21.5 L55 33.5 L44 26 L33 33.5 L37 21.5 L27 14.5 L39.5 14.5 Z'/><circle cx='44' cy='18' r='3' fill='%23fff'/></svg>");
-      background-size: contain;
-      background-repeat: no-repeat;
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' width='64' height='64'><defs><linearGradient id='grad' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%233498db' stop-opacity='0'/><stop offset='45%25' stop-color='%23e67e22' stop-opacity='0.6'/><stop offset='100%25' stop-color='%23f1c40f' stop-opacity='0.95'/></linearGradient></defs><path d='M8 56 Q 24 48 44 18' stroke='url(%23grad)' stroke-width='6.5' stroke-linecap='round' fill='none'/><path d='M4 46 Q 20 38 44 18' stroke='url(%23grad)' stroke-width='3.5' stroke-linecap='round' fill='none'/><path d='M16 60 Q 28 52 44 18' stroke='url(%23grad)' stroke-width='3' stroke-linecap='round' fill='none'/><circle cx='14' cy='52' r='2' fill='%23fff' opacity='0.7'/><circle cx='26' cy='40' r='1.8' fill='%23f1c40f' opacity='0.8'/><circle cx='8' cy='40' r='1.2' fill='%23fff' opacity='0.5'/><circle cx='34' cy='28' r='1.8' fill='%23fff' opacity='0.9'/><path fill='%23f1c40f' stroke='%23fff' stroke-width='1.5' d='M44 2 L48.5 14.5 L61 14.5 L51 21.5 L55 33.5 L44 26 L33 33.5 L37 21.5 L27 14.5 L39.5 14.5 Z'/><circle cx='44' cy='18' r='3' fill='%23fff'/></svg>") !important;
+      background-size: contain !important;
+      background-repeat: no-repeat !important;
       cursor: pointer;
       transform: rotate(-10deg);
       transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -235,6 +244,8 @@
 
     input[type=range]::-moz-range-thumb:active {
       transform: scale(1.15) rotate(-22deg);
+      outline: none !important;
+      background-color: transparent !important;
     }
 
     /* 夜空に鮮やかに映える決定ボタン */
