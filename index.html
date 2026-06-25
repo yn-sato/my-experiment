@@ -18,7 +18,7 @@
             --accent-color: #d2b48c;      /* 温かみのあるベージュ */
             --text-main: #2f4f4f;          /* 柔らかいダークスレート（文字主色） */
             --text-sub: #696969;           /* 中間グレー */
-            --card-bg: #ffffff;           /* 純白のカード背景 */
+            --card-bg: #ffffff;           /* 純白 of カード背景 */
             --shadow: 0 10px 30px rgba(85, 107, 47, 0.05); /* 非常にソフトな影 */
             --shadow-hover: 0 15px 40px rgba(85, 107, 47, 0.12); /* ホバー時の浮き上がり */
             --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -42,7 +42,7 @@
 
         /* Container & Layout */
         .container {
-            max-width: 960px;
+            max-width: 1040px; /* カードが4枚に増えるためコンテナ幅を少し広げてゆとりを持たせます */
             margin: 0 auto;
             padding: 4rem 2rem;
         }
@@ -134,7 +134,7 @@
             fill: currentColor;
         }
 
-        /* Experiment Cards Section */
+        /* Experiments Section - 4枚のカード用にグリッド幅を再定義 */
         .experiments-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -142,20 +142,22 @@
             margin-bottom: 4rem;
         }
 
-        @media (min-width: 768px) {
+        /* PC (4カラム表示) */
+        @media (min-width: 1024px) {
             .experiments-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
-        /* 3つの異なるサイズの端末で最適なレイアウトを実現 */
-        @media (max-width: 900px) and (min-width: 600px) {
+        /* タブレット大 (2カラム表示) */
+        @media (max-width: 1023px) and (min-width: 768px) {
             .experiments-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 599px) {
+        /* スマホ・タブレット小 (1カラム表示) */
+        @media (max-width: 767px) {
             .experiments-grid {
                 grid-template-columns: 1fr;
             }
@@ -164,7 +166,7 @@
         .experiment-card {
             background-color: var(--card-bg);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 1.8rem;
             box-shadow: var(--shadow);
             border: 1px solid rgba(143, 188, 143, 0.1);
             display: flex;
@@ -216,7 +218,7 @@
 
         .experiment-title {
             font-family: 'Kiwi Maru', serif;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--primary-color);
             margin-bottom: 1rem;
             font-weight: 500;
@@ -224,7 +226,7 @@
         }
 
         .experiment-desc {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-sub);
             line-height: 1.6;
         }
@@ -233,7 +235,7 @@
         .card-bottom {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem; /* ボタン同士の程よい間隔 */
+            gap: 0.7rem; /* ボタン同士の快適な間隔 */
             margin-top: auto;
         }
 
@@ -243,18 +245,18 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 0.9rem 1.2rem;
+            padding: 0.85rem 1.1rem;
             text-decoration: none;
             border-radius: 12px;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             transition: var(--transition);
             border: none;
             cursor: pointer;
             text-align: center;
         }
 
-        /* 1. Primary Action Button (Main Experiment Link) */
+        /* 1. Primary Action Button */
         .btn-primary {
             background-color: var(--primary-color);
             color: #ffffff;
@@ -263,7 +265,7 @@
 
         .btn-primary::after {
             content: '→';
-            margin-left: 0.5rem;
+            margin-left: 0.4rem;
             transition: var(--transition);
             font-weight: bold;
         }
@@ -277,7 +279,7 @@
             transform: translateX(4px);
         }
 
-        /* 2. Secondary Action Button (Preregistration Link) */
+        /* 2. Secondary Action Button (Outline) */
         .btn-secondary {
             background-color: transparent;
             color: var(--primary-color);
@@ -286,7 +288,7 @@
         }
 
         .btn-secondary:hover {
-            background-color: rgba(85, 107, 47, 0.05); /* ほんのりと色づくホバー */
+            background-color: rgba(85, 107, 47, 0.05); /* ほんのりとホバーカラーを付与 */
             border-color: #3f5120;
             color: #3f5120;
         }
@@ -296,10 +298,10 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-sub);
             text-decoration: underline;
-            padding: 0.4rem 0;
+            padding: 0.3rem 0;
             transition: var(--transition);
             font-weight: 400;
         }
@@ -322,16 +324,6 @@
         }
         .experiment-card:nth-child(1)::after {
             background-color: #708090;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            margin-top: 6rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(143, 188, 143, 0.2);
-            font-size: 0.85rem;
-            color: var(--text-sub);
         }
 
         /* Animations for load-in */
@@ -359,6 +351,9 @@
         .delay-3 {
             animation-delay: 0.3s;
         }
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
     </style>
 </head>
 <body>
@@ -383,7 +378,7 @@
             </div>
         </header>
 
-        <!-- Experiments Section -->
+        <!-- Experiments Section (All 4 Experiments displayed) -->
         <main class="experiments-grid">
             
             <!-- Experiment 0 -->
@@ -410,10 +405,22 @@
                 </div>
             </section>
 
-            <!-- Experiment 2 (Updated to N-Back with Preregistration Links) -->
+            <!-- Experiment 2 (Restored Muller-Lyer Illusion) -->
             <section class="experiment-card animate-fade-in delay-3">
                 <div class="card-top">
                     <span class="experiment-number">Experiment 2</span>
+                    <h2 class="experiment-title">ミュラー・リヤー錯視</h2>
+                    <p class="experiment-desc">矢羽の向きによって、同じ長さの線分が異なって見える錯覚の強さを測ります。スライダーを操作して合わせる視覚テストです。<br><strong>（所要時間：約2分）</strong></p>
+                </div>
+                <div class="card-bottom">
+                    <a href="muller_lyer_final.html" class="btn btn-primary">実験2に参加する</a>
+                </div>
+            </section>
+
+            <!-- Experiment 3 (Newly Added N-Back Task with Preregistration Details) -->
+            <section class="experiment-card animate-fade-in delay-4">
+                <div class="card-top">
+                    <span class="experiment-number">Experiment 3</span>
                     <h2 class="experiment-title">N-Back課題</h2>
                     <p class="experiment-desc">ワーキングメモリ（作業記憶）の能力を測定する本格的な認知心理学実験です。提示される刺激がN回前と同じだったかを素早く判断します。<br><strong>（所要時間：約5分）</strong></p>
                 </div>
