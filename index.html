@@ -144,15 +144,8 @@
 
         @media (min-width: 768px) {
             .experiments-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            /* 実験0（Hello World）は幅広で導入として見せるため、1カラム目をスパンさせても良いが、
-               3枚を美しく並べるため、ここでは1つ目を全幅に、残りを2列にするか、等幅3カラムにするのが綺麗です。
-               今回は3枚あるので、中身のボリュームに合わせた美しいグリッドにします。 */
-            .experiments-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-            /* 実験0（はじめてのWebページ）を目立たせたい場合や、全体の横並びを整えるための構成 */
         }
 
         /* 3つの異なるサイズの端末で最適なレイアウトを実現 */
@@ -160,7 +153,6 @@
             .experiments-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            /* 最後のカードを中央寄せにするか、2列で綺麗に収めます */
         }
 
         @media (max-width: 599px) {
@@ -209,7 +201,7 @@
         }
 
         .card-top {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .experiment-number {
@@ -237,50 +229,92 @@
             line-height: 1.6;
         }
 
-        /* Buttons & Links */
+        /* Card Bottom (Button Group) */
+        .card-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* ボタン同士の程よい間隔 */
+            margin-top: auto;
+        }
+
+        /* Buttons & Links Base */
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 100%;
-            padding: 0.9rem 1.5rem;
-            background-color: var(--primary-color);
-            color: #ffffff;
+            padding: 0.9rem 1.2rem;
             text-decoration: none;
             border-radius: 12px;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: var(--transition);
-            box-shadow: 0 4px 10px rgba(85, 107, 47, 0.15);
-            position: relative;
-            overflow: hidden;
             border: none;
             cursor: pointer;
+            text-align: center;
         }
 
-        /* ボタン内の矢印アイコン装飾 */
-        .btn::after {
+        /* 1. Primary Action Button (Main Experiment Link) */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(85, 107, 47, 0.15);
+        }
+
+        .btn-primary::after {
             content: '→';
             margin-left: 0.5rem;
             transition: var(--transition);
             font-weight: bold;
         }
 
-        .btn:hover {
-            background-color: #3f5120; /* やや暗くして視認性を向上 */
+        .btn-primary:hover {
+            background-color: #3f5120; /* 視認性を考慮した暗めのオリーブ */
             box-shadow: 0 6px 15px rgba(85, 107, 47, 0.25);
         }
 
-        .btn:hover::after {
+        .btn-primary:hover::after {
             transform: translateX(4px);
         }
 
-        /* 各実験ごとにボタン色をほんの少し変える、または特別感を出したい場合のバリエーション */
-        .experiment-card:nth-child(1) .btn {
+        /* 2. Secondary Action Button (Preregistration Link) */
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1.5px solid var(--primary-color);
+            font-weight: 500;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(85, 107, 47, 0.05); /* ほんのりと色づくホバー */
+            border-color: #3f5120;
+            color: #3f5120;
+        }
+
+        /* 3. Text/History Link (Subtle Proof Link) */
+        .link-subtle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            text-decoration: underline;
+            padding: 0.4rem 0;
+            transition: var(--transition);
+            font-weight: 400;
+        }
+
+        .link-subtle:hover {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        /* Variation for Experiment 0 (Slate Style) */
+        .experiment-card:nth-child(1) .btn-primary {
             background-color: #708090; /* スレートグレー（お試し用） */
             box-shadow: 0 4px 10px rgba(112, 128, 144, 0.15);
         }
-        .experiment-card:nth-child(1) .btn:hover {
+        .experiment-card:nth-child(1) .btn-primary:hover {
             background-color: #5f6f7d;
         }
         .experiment-card:nth-child(1) .experiment-number {
@@ -360,7 +394,7 @@
                     <p class="experiment-desc">第2回講義で作成した記念すべき「Hello World」のページです。すべての始まりとなったシンプルな成果物をご覧ください。</p>
                 </div>
                 <div class="card-bottom">
-                    <a href="hello_world.html" class="btn">Hello Worldを見る</a>
+                    <a href="hello_world.html" class="btn btn-primary">Hello Worldを見る</a>
                 </div>
             </section>
 
@@ -372,19 +406,26 @@
                     <p class="experiment-desc">「文字の意味」と「文字のインクの色」の干渉度合いを調べる、簡単なキーボード入力テストです。<br><strong>（所要時間：約3分）</strong></p>
                 </div>
                 <div class="card-bottom">
-                    <a href="stroop.html" class="btn">実験1に参加する</a>
+                    <a href="stroop.html" class="btn btn-primary">実験1に参加する</a>
                 </div>
             </section>
 
-            <!-- Experiment 2 -->
+            <!-- Experiment 2 (Updated to N-Back with Preregistration Links) -->
             <section class="experiment-card animate-fade-in delay-3">
                 <div class="card-top">
                     <span class="experiment-number">Experiment 2</span>
-                    <h2 class="experiment-title">ミュラー・リヤー錯視</h2>
-                    <p class="experiment-desc">矢羽の向きによって、同じ長さの線分が異なって見える錯覚の強さを測ります。スライダーを操作して合わせる視覚テストです。<br><strong>（所要時間：約2分）</strong></p>
+                    <h2 class="experiment-title">N-Back課題</h2>
+                    <p class="experiment-desc">ワーキングメモリ（作業記憶）の能力を測定する本格的な認知心理学実験です。提示される刺激がN回前と同じだったかを素早く判断します。<br><strong>（所要時間：約5分）</strong></p>
                 </div>
                 <div class="card-bottom">
-                    <a href="muller_lyer_final.html" class="btn">実験2に参加する</a>
+                    <!-- Main Experiment Link -->
+                    <a href="n_back.html" class="btn btn-primary">実験に参加する</a>
+                    
+                    <!-- Preregistration Outline Button (White styled) -->
+                    <a href="https://github.com/yn-sato/my-experiment/blob/main/preregistration.md" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">プレレジを確認する</a>
+                    
+                    <!-- Timestamp and Commits Subtle Link -->
+                    <a href="https://github.com/yn-sato/my-experiment/commits/main/preregistration.md" target="_blank" rel="noopener noreferrer" class="link-subtle">変更履歴（証拠）を確認する</a>
                 </div>
             </section>
 
