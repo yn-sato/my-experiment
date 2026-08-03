@@ -10,16 +10,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* カラー変数の定義（すべてラベンダー・パープル系に変更） */
+        /* カラー変数の定義 */
         :root {
-            --bg-color: #f3eff8;          /* 全体の背景：優しいラベンダー */
-            --primary-color: #6a4c7d;     /* メインカラー：深みのあるラベンダーパープル */
-            --primary-hover: #523863;     /* ホバー時の濃いパープル */
-            --primary-light: #b397ca;     /* アクセント：明るいラベンダー */
-            --accent-pink: #e2b6cf;        /* お花用の差し色ピンク */
-            --text-main: #33273b;          /* 主な文字色：ダークパープルグレー */
+            --bg-color: #f3eff8;          /* ラベンダー背景 */
+            --primary-color: #6a4c7d;     /* メインカラー：ディープラベンダー */
+            --primary-hover: #523863;     /* ホバー時のカラー */
+            --primary-light: #b397ca;     /* アクセントラベンダー */
+            --text-main: #33273b;          /* 主な文字色 */
             --text-sub: #6c5c77;           /* サブ文字色 */
-            --card-bg: rgba(255, 255, 255, 0.94); /* カード背景：白（少し透過） */
+            --card-bg: rgba(255, 255, 255, 0.92); /* カード背景 */
             --shadow: 0 10px 30px rgba(106, 76, 125, 0.12);
             --shadow-hover: 0 15px 40px rgba(106, 76, 125, 0.22);
             --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -34,8 +33,31 @@
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background-color: var(--bg-color);
-            /* お花をちりばめた背景（SVGパターン） */
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 100 100'%3E%3Cg opacity='0.55'%3E%3C!-- 花1 (ラベンダー) --%3E%3Cg transform='translate(25,25) scale(1)'%3E%3Ccircle cx='0' cy='-6' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='5.7' cy='-3' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='5.7' cy='3' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='0' cy='6' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='-5.7' cy='3' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='-5.7' cy='-3' r='4.5' fill='%3C%23c8aadb'/%3E%3Ccircle cx='0' cy='0' r='3.5' fill='%3C%23ffebaa'/%3E%3C/g%3E%3C!-- 花2 (ソフトピンク) --%3E%3Cg transform='translate(80,75) scale(0.8)'%3E%3Ccircle cx='0' cy='-6' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='5.7' cy='-3' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='5.7' cy='3' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='0' cy='6' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='-5.7' cy='3' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='-5.7' cy='-3' r='4.5' fill='%3C%23eabfd5'/%3E%3Ccircle cx='0' cy='0' r='3.5' fill='%3C%23ffebaa'/%3E%3C/g%3E%3C!-- 小さなドットアクセント --%3E%3Ccircle cx='85' cy='25' r='2.5' fill='%3C%23b397ca' opacity='0.7'/%3E%3Ccircle cx='30' cy='80' r='3' fill='%3C%23eabfd5' opacity='0.7'/%3E%3C/g%3E%3C/svg%3E");
+            /* CSSのグラデーションで作る確実なお花柄ドットパターン */
+            background-image: 
+                /* 花びら (薄紫色) */
+                radial-gradient(circle, #d6c0e6 4px, transparent 4.5px),
+                radial-gradient(circle, #d6c0e6 4px, transparent 4.5px),
+                radial-gradient(circle, #d6c0e6 4px, transparent 4.5px),
+                radial-gradient(circle, #d6c0e6 4px, transparent 4.5px),
+                /* 花の中心 (黄色) */
+                radial-gradient(circle, #fcebaf 3px, transparent 3.5px),
+                
+                /* 2つ目の小さなお花びら (ピンク系) */
+                radial-gradient(circle, #ebd0e0 3px, transparent 3.5px),
+                radial-gradient(circle, #ebd0e0 3px, transparent 3.5px),
+                radial-gradient(circle, #ebd0e0 3px, transparent 3.5px),
+                radial-gradient(circle, #ebd0e0 3px, transparent 3.5px),
+                /* 2つ目の花の中心 (黄色) */
+                radial-gradient(circle, #fff3c4 2px, transparent 2.5px);
+
+            background-position: 
+                /* 1つ目のお花の位置配置 */
+                30px 24px, 30px 36px, 24px 30px, 36px 30px, 30px 30px,
+                /* 2つ目のお花の位置配置 */
+                100px 94px, 100px 106px, 94px 100px, 106px 100px, 100px 100px;
+
+            background-size: 130px 130px;
             background-repeat: repeat;
             color: var(--text-main);
             line-height: 1.8;
