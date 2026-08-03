@@ -12,15 +12,16 @@
     <style>
         /* CSS Reset & Variables */
         :root {
-            --bg-color: #f7f9f6;          /* 暖かみのある非常に淡いグレー・グリーン */
+            /* 背景色を上品なラベンダーカラーに変更 */
+            --bg-color: #f4f0f8;          
             --primary-color: #556b2f;     /* 落ち着いたダークオリーブグリーン（主色） */
-            --primary-light: #8fbc8f;     /* 柔らかなミント・セージグリーン（アクセント） */
+            --primary-light: #a390b8;     /* ラベンダーに合わせた薄紫色（アクセント） */
             --accent-color: #d2b48c;      /* 温かみのあるベージュ */
             --text-main: #2f4f4f;          /* 柔らかいダークスレート（文字主色） */
             --text-sub: #696969;           /* 中間グレー */
-            --card-bg: #ffffff;           /* 純白 of カード背景 */
-            --shadow: 0 10px 30px rgba(85, 107, 47, 0.05); /* 非常にソフトな影 */
-            --shadow-hover: 0 15px 40px rgba(85, 107, 47, 0.12); /* ホバー時の浮き上がり */
+            --card-bg: rgba(255, 255, 255, 0.92); /* カード背景（少し透過させて背景になじませる） */
+            --shadow: 0 10px 30px rgba(100, 80, 120, 0.08); /* ラベンダー調に合わせたソフトな影 */
+            --shadow-hover: 0 15px 40px rgba(100, 80, 120, 0.15); /* ホバー時の浮き上がり */
             --transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -33,6 +34,10 @@
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background-color: var(--bg-color);
+            /* SVGを使ったお花の散りばめ模様 */
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 100 100'%3E%3Cg opacity='0.35'%3E%3C!-- 小さいお花1 --%3E%3Cg transform='translate(20,20)'%3E%3Ccircle cx='0' cy='-6' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='5.2' cy='-3' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='5.2' cy='3' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='0' cy='6' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='-5.2' cy='3' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='-5.2' cy='-3' r='4' fill='%3C%23d8c2e7'/%3E%3Ccircle cx='0' cy='0' r='3.5' fill='%3C%23fff8dc'/%3E%3C/g%3E%3C!-- 小さいお花2 --%3E%3Cg transform='translate(75,65) scale(0.85)'%3E%3Ccircle cx='0' cy='-6' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='5.2' cy='-3' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='5.2' cy='3' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='0' cy='6' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='-5.2' cy='3' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='-5.2' cy='-3' r='4' fill='%3C%23e2d5ed'/%3E%3Ccircle cx='0' cy='0' r='3.5' fill='%3C%23fff8dc'/%3E%3C/g%3E%3C!-- 小さな葉っぱ・アクセント点 --%3E%3Ccircle cx='80' cy='25' r='2' fill='%3C%238fbc8f' opacity='0.5'/%3E%3Ccircle cx='30' cy='80' r='2.5' fill='%3C%23c4aead' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E");
+            background-repeat: repeat;
             color: var(--text-main);
             line-height: 1.8;
             -webkit-font-smoothing: antialiased;
@@ -60,10 +65,10 @@
             top: -20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             background-color: var(--primary-light);
-            opacity: 0.15;
+            opacity: 0.2;
             border-radius: 50%;
             z-index: -1;
         }
@@ -89,10 +94,11 @@
 
         .intro-card {
             background-color: var(--card-bg);
+            backdrop-filter: blur(5px);
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(143, 188, 143, 0.15);
+            border: 1px solid rgba(163, 144, 184, 0.25);
             max-width: 760px;
             margin: 0 auto;
             position: relative;
@@ -163,10 +169,11 @@
 
         .experiment-card {
             background-color: var(--card-bg);
+            backdrop-filter: blur(5px);
             border-radius: 20px;
             padding: 1.8rem;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(143, 188, 143, 0.1);
+            border: 1px solid rgba(163, 144, 184, 0.2);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -183,14 +190,14 @@
             right: 0;
             height: 4px;
             background-color: var(--primary-light);
-            opacity: 0.4;
+            opacity: 0.6;
             transition: var(--transition);
         }
 
         .experiment-card:hover {
             transform: translateY(-8px);
             box-shadow: var(--shadow-hover);
-            border-color: rgba(143, 188, 143, 0.3);
+            border-color: rgba(163, 144, 184, 0.4);
         }
 
         .experiment-card:hover::after {
@@ -206,7 +213,7 @@
         .experiment-number {
             font-size: 0.8rem;
             font-weight: 700;
-            color: var(--primary-light);
+            color: #8a73a5;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             margin-bottom: 0.5rem;
@@ -416,7 +423,6 @@
                 </div>
                 <div class="card-bottom">
                     <a href="n_back.html" class="btn btn-primary">実験に参加する</a>
-                    <!-- 修正点：my_exp_report.html へのリンクを「プレレジを確認する」の上に確実に追加 -->
                     <a href="my_exp_report.html" class="btn btn-secondary">レポート報告を見る</a>
                     <a href="https://github.com/yn-sato/my-experiment/blob/main/preregistration.md" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">プレレジを確認する</a>
                     <a href="https://github.com/yn-sato/my-experiment/commits/main/preregistration.md" target="_blank" rel="noopener noreferrer" class="link-subtle">変更履歴（証拠）を確認する</a>
